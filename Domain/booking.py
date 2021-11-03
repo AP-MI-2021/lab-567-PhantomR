@@ -92,5 +92,3 @@ def booking_get_checked_in(booking: dict) -> bool:
 def booking_set_checked_in(booking: dict, checked_in: bool):
     # TODO: WRITE DOCSTRING
     booking["checked_in"] = checked_in
-
-

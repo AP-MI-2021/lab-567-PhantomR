@@ -1,4 +1,4 @@
-from Logic.booking_crud import  *
+from Logic.booking_crud import *
 
 
 def test_booking_crud():
@@ -40,7 +40,7 @@ def test_booking_crud():
     assert booking_get_name(booking) == "Cosmin Prunariu-Piersica"
     assert booking_get_class_type(booking) == "Economy Plus"
     assert booking_get_price(booking) == 1000.0
-    assert booking_get_checked_in(booking) == True
+    assert booking_get_checked_in(booking)
 
 
 def run_booking_crud_tests():

@@ -46,7 +46,3 @@ def run_booking_tests():
     test_booking_getters()
     test_booking_setters()
     print("[TESTS] All Booking tests passed")
-
-
-
-

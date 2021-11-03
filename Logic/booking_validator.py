@@ -1,5 +1,6 @@
 from typing import Tuple
 
+
 def booking_validate_id(id_) -> int:
     errors = []
     if id_ == '':
@@ -49,7 +50,6 @@ def booking_validate(id_, name, class_type, price, checked_in) -> Tuple[int, str
             errors.append('ID must be non-negative.')
     except ValueError:
         errors.append('ID must be an integer.')
-
 
     # validate name
     if name == '':

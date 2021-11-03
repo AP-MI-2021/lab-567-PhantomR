@@ -118,4 +118,3 @@ def crud_get_booking(bookings, id_):
             return booking
 
     return None
-

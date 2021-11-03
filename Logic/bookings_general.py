@@ -1,3 +1,5 @@
+from typing import Optional
+
 from Domain.booking import *
 
 
@@ -19,7 +21,7 @@ def bookings_general_sort_decreasingly_by_price(bookings: list[dict]) -> list[di
     return sorted_list
 
 
-def bookings_general_find_maximum_price_for_class_type(bookings: list[dict], class_type: str) -> float:
+def bookings_general_find_maximum_price_for_class_type(bookings: list[dict], class_type: str) -> Optional[float]:
     """
     Given a class type (Economy, Economy Plus or Business), find the maximum price among the bookings having
     this class type.

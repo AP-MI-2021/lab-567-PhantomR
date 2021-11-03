@@ -19,7 +19,6 @@ def print_list(exc):
     print(exc)
 
 
-
 def ui_show_crud_menu():
     print('''
     CRUD MENU
@@ -133,8 +132,8 @@ def ui_delete_existing_booking(bookings):
     new_bookings = bookings
     id_ = input("Enter the booking's ID: ")
     try:
-        booking_validate_id(id_)
-        booking = crud_get_booking(bookings, int(id_))
+        id_ = booking_validate_id(id_)
+        booking = crud_get_booking(bookings, id_)
         try:
             if booking is None:
                 print("A booking with the given id does not exist.")
