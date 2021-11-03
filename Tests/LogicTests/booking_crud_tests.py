@@ -2,7 +2,6 @@ from Logic.booking_crud import  *
 
 
 def test_booking_crud():
-
     bookings = []
 
     # test insertion and getting booking by id

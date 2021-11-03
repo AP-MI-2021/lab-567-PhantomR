@@ -171,5 +171,6 @@ def ui_run_other_operations_menu(bookings):
 
     return bookings
 
+
 def ui_run_undo_redo_menu():
     pass
