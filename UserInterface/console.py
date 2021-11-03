@@ -1,5 +1,6 @@
 from Logic.booking_crud import *
 
+
 def ui_show_main_menu():
     print('''
     MAIN MENU
@@ -91,12 +92,14 @@ def ui_edit_existing_booking(bookings):
 
 
 def ui_delete_existing_booking(bookings):
+    new_bookings = bookings
     id_ = int(input("Enter the booking's ID: "))
     if crud_get_booking(bookings, id_) is None:
         print("A booking with the given id does not exist.")
     else:
         new_bookings = crud_delete_booking(bookings, id_)
         print("Booking successfully deleted.")
+
     return new_bookings
 
 
@@ -126,4 +129,3 @@ def ui_run_other_operations_menu():
 
 def ui_run_undo_redo_menu():
     pass
-
