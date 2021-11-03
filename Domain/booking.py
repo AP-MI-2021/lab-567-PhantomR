@@ -89,7 +89,7 @@ def booking_get_checked_in(booking: dict) -> bool:
     return booking["checked_in"]
 
 
-def booking_set_id(booking: dict, checked_in: bool):
+def booking_set_checked_in(booking: dict, checked_in: bool):
     # TODO: WRITE DOCSTRING
     booking["checked_in"] = checked_in
 

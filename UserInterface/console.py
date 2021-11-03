@@ -1,3 +1,5 @@
+from Logic.booking_crud import *
+
 def ui_show_main_menu():
     print('''
     MAIN MENU
@@ -42,22 +44,59 @@ def ui_run_main_menu_loop(bookings):
 
 
 def ui_handle_create_new_booking(bookings):
-    new_bookings = []
-    return new_bookings
+    id_ = int(input("Enter the new booking's ID: "))
+    name = input("Enter the new booking's name: ")
+    # TODO: Make a menu for this
+    class_type = input("Enter the new booking's class type (Economy, Economy Plus or Business: ")
+    price = float(input("Enter the new booking's price: "))
+    # TODO: Make a menu for this
+    checked_in = True if input("Is this booking checked in (Y/N)? ") == 'Y' else False
+
+    return crud_insert_booking(bookings, id_, name, class_type, price, checked_in)
 
 
 def ui_handle_display_all_existing_bookings(bookings):
-    new_bookings = []
-    return new_bookings
+    # TODO: Add some variables, dirty calls inside the format string
+    print("Here's a list of all bookings: ")
+    for booking in bookings:
+        print(f'''
+        ----------------------------------------------
+        ID: {booking_get_id(booking)}
+        Name: {booking_get_name(booking)}
+        Class Type: {booking_get_class_type(booking)}
+        Price: {booking_get_price(booking)}
+        Checked In: {booking_get_checked_in(booking)}
+        ----------------------------------------------
+        
+        ''')
 
 
 def ui_edit_existing_booking(bookings):
-    new_bookings = []
+    new_bookings = bookings
+
+    id_ = int(input("Enter the booking's ID: "))
+    if crud_get_booking(bookings, id_) is None:
+        print("A booking with the given id does not exist.")
+    else:
+        new_name = input("Enter the new booking's name: ")
+        # TODO: Make a menu for this
+        new_class_type = input("Enter the new booking's class type (Economy, Economy Plus or Business: ")
+        new_price = float(input("Enter the new booking's price: "))
+        # TODO: Make a menu for this
+        new_checked_in = True if input("Is this booking checked in (Y/N)? ") == 'Y' else False
+        new_bookings = crud_edit_booking(bookings, id_, new_name, new_class_type, new_price, new_checked_in)
+        print("Booking successfully edited.")
+
     return new_bookings
 
 
 def ui_delete_existing_booking(bookings):
-    new_bookings = []
+    id_ = int(input("Enter the booking's ID: "))
+    if crud_get_booking(bookings, id_) is None:
+        print("A booking with the given id does not exist.")
+    else:
+        new_bookings = crud_delete_booking(bookings, id_)
+        print("Booking successfully deleted.")
     return new_bookings
 
 
@@ -68,7 +107,7 @@ def ui_run_crud_menu_loop(bookings):
         if option == 1:
             bookings = ui_handle_create_new_booking(bookings)
         elif option == 2:
-            bookings = ui_handle_display_all_existing_bookings(bookings)
+            ui_handle_display_all_existing_bookings(bookings)
         elif option == 3:
             bookings = ui_edit_existing_booking(bookings)
         elif option == 4:
