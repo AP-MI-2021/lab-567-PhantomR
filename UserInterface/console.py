@@ -1,4 +1,5 @@
 from Logic.booking_crud import *
+from Logic.booking_validator import booking_validate, booking_validate_id
 from Logic.bookings_general import *
 
 
@@ -12,6 +13,11 @@ def ui_show_main_menu():
     -------------------------------------------
     0. Exit
     ''')
+
+
+def print_list(exc):
+    print(exc)
+
 
 
 def ui_show_crud_menu():
@@ -57,13 +63,17 @@ def ui_run_main_menu_loop(bookings):
 
 
 def ui_handle_create_new_booking(bookings):
-    id_ = int(input("Enter the new booking's ID: "))
+    id_ = input("Enter the new booking's ID: ")
     name = input("Enter the new booking's name: ")
     # TODO: Make a menu for this
     class_type = input("Enter the new booking's class type (Economy, Economy Plus or Business: ")
-    price = float(input("Enter the new booking's price: "))
+    price = input("Enter the new booking's price: ")
     # TODO: Make a menu for this
-    checked_in = True if input("Is this booking checked in (Y/N)? ") == 'Y' else False
+    checked_in = input("Is this booking checked in (Y/N)? ")
+    try:
+        id_, name, class_type, price, checked_in = booking_validate(id_, name, class_type, price, checked_in)
+    except ValueError as e:
+        print_list(e)
 
     return crud_insert_booking(bookings, id_, name, class_type, price, checked_in)
 
@@ -92,29 +102,51 @@ def ui_edit_existing_booking(bookings):
     new_bookings = bookings
 
     id_ = int(input("Enter the booking's ID: "))
-    if crud_get_booking(bookings, id_) is None:
+    try:
+        booking_validate_id(id_)
+    except ValueError as e:
+        print_list(e)
+
+    if crud_get_booking(bookings, int(id_)) is None:
         print("A booking with the given id does not exist.")
     else:
         new_name = input("Enter the new booking's name: ")
         # TODO: Make a menu for this
         new_class_type = input("Enter the new booking's class type (Economy, Economy Plus or Business: ")
-        new_price = float(input("Enter the new booking's price: "))
+        new_price = input("Enter the new booking's price: ")
+        new_checked_in = input("Is the booking checked in? (Y/N)")
         # TODO: Make a menu for this
-        new_checked_in = True if input("Is this booking checked in (Y/N)? ") == 'Y' else False
-        new_bookings = crud_edit_booking(bookings, id_, new_name, new_class_type, new_price, new_checked_in)
-        print("Booking successfully edited.")
+
+        try:
+            id_, new_name, new_class_type, new_price, new_checked_in = \
+                booking_validate(str(id_), new_name, new_class_type, new_price, new_checked_in)
+
+            new_bookings = crud_edit_booking(bookings, id_, new_name, new_class_type, new_price, new_checked_in)
+            print("Booking successfully edited.")
+        except ValueError as e:
+            print_list(e)
 
     return new_bookings
 
 
 def ui_delete_existing_booking(bookings):
     new_bookings = bookings
-    id_ = int(input("Enter the booking's ID: "))
-    if crud_get_booking(bookings, id_) is None:
-        print("A booking with the given id does not exist.")
-    else:
-        new_bookings = crud_delete_booking(bookings, id_)
-        print("Booking successfully deleted.")
+    id_ = input("Enter the booking's ID: ")
+    try:
+        booking_validate_id(id_)
+        booking = crud_get_booking(bookings, int(id_))
+        try:
+            if booking is None:
+                print("A booking with the given id does not exist.")
+            else:
+                new_bookings = crud_delete_booking(bookings, id_)
+                print("Booking successfully deleted.")
+
+        except ValueError as e:
+            print_list(e)
+
+    except ValueError as e:
+        print_list(e)
 
     return new_bookings
 
