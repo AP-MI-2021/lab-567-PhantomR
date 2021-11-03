@@ -39,7 +39,22 @@ def test_bookings_general_sort_decreasingly_by_price():
     assert is_sorted_decreasingly_by_price(bookings)
 
 
+def test_bookings_general_find_maximum_price_for_class_type():
+    # create a list of bookings to work on
+    bookings = []
+    bookings = crud_insert_booking(bookings, 1, "Alexandru Duna", "Economy", 100.0, True)
+    bookings = crud_insert_booking(bookings, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
+    bookings = crud_insert_booking(bookings, 3, "Bill Tractor", "Business", 500.0, True)
+    bookings = crud_insert_booking(bookings, 4, "Cosmin Piersica", "Business", 1000.0, True)
+    bookings = crud_insert_booking(bookings, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+
+    assert bookings_general_find_maximum_price_for_class_type(bookings, "Economy") == 100.0
+    assert bookings_general_find_maximum_price_for_class_type(bookings, "Economy Plus") == 200.0
+    assert bookings_general_find_maximum_price_for_class_type(bookings, "Business") == 1000.0
+    assert bookings_general_find_maximum_price_for_class_type(bookings, "CLASS WITH NO BOOKINGS") is None
+
 
 def run_booking_general_tests():
     test_bookings_general_sort_decreasingly_by_price()
+    test_bookings_general_find_maximum_price_for_class_type()
     print("[TESTS] All bookings general tests passed.")

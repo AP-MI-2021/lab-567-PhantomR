@@ -141,11 +141,19 @@ def ui_run_crud_menu_loop(bookings):
 
 def ui_handle_sort_bookings_decreasingly_by_price(bookings):
     bookings = bookings_general_sort_decreasingly_by_price(bookings)
+    print("Done sorting.")
     ui_handle_display_all_existing_bookings(bookings)
+    return bookings
 
 
 def ui_find_maximum_price_for_all_class_types(bookings):
-    pass
+    max_economy = bookings_general_find_maximum_price_for_class_type(bookings, "Economy")
+    max_economy_plus = bookings_general_find_maximum_price_for_class_type(bookings, "Economy Plus")
+    max_business = bookings_general_find_maximum_price_for_class_type(bookings, "Business")
+
+    print(f"The maximum price for the Economy class is {max_economy}")
+    print(f"The maximum price for the Economy Plus class is {max_economy_plus}")
+    print(f"The maximum price for the Business class is {max_business}")
 
 
 def ui_run_other_operations_menu(bookings):
@@ -155,7 +163,7 @@ def ui_run_other_operations_menu(bookings):
         if option == 1:
             bookings = ui_handle_sort_bookings_decreasingly_by_price(bookings)
         elif option == 2:
-            bookings = ui_find_maximum_price_for_all_class_types(bookings)
+            ui_find_maximum_price_for_all_class_types(bookings)
         elif option == 0:
             break
         else:
