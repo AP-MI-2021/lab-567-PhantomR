@@ -1,4 +1,5 @@
 from Logic.booking_crud import *
+from Logic.bookings_general import *
 
 
 def ui_show_main_menu():
@@ -26,6 +27,17 @@ def ui_show_crud_menu():
     ''')
 
 
+def ui_show_other_operations_menu():
+    print('''
+    OTHER OPERATIONS MENU
+    -------------------------------------------
+    1. Sort bookings in decreasing order by price
+    2. Find the maximum price for all class types
+    -------------------------------------------
+    0. Go back to the Main Menu    
+    ''')
+
+
 def ui_run_main_menu_loop(bookings):
     while True:
         ui_show_main_menu()
@@ -33,7 +45,7 @@ def ui_run_main_menu_loop(bookings):
         if option == 1:
             bookings = ui_run_crud_menu_loop(bookings)
         elif option == 2:
-            ui_run_other_operations_menu()
+            bookings = ui_run_other_operations_menu(bookings)
         elif option == 3:
             ui_run_undo_redo_menu()
         elif option == 0:
@@ -58,18 +70,22 @@ def ui_handle_create_new_booking(bookings):
 
 def ui_handle_display_all_existing_bookings(bookings):
     # TODO: Add some variables, dirty calls inside the format string
-    print("Here's a list of all bookings: ")
-    for booking in bookings:
-        print(f'''
-        ----------------------------------------------
-        ID: {booking_get_id(booking)}
-        Name: {booking_get_name(booking)}
-        Class Type: {booking_get_class_type(booking)}
-        Price: {booking_get_price(booking)}
-        Checked In: {booking_get_checked_in(booking)}
-        ----------------------------------------------
-        
-        ''')
+    if len(bookings) == 0:
+        print("There are no bookings to show.")
+    else:
+        print("Here's a list of all bookings: ")
+
+        for booking in bookings:
+            print(f'''
+            ----------------------------------------------
+            ID: {booking_get_id(booking)}
+            Name: {booking_get_name(booking)}
+            Class Type: {booking_get_class_type(booking)}
+            Price: {booking_get_price(booking)}
+            Checked In: {booking_get_checked_in(booking)}
+            ----------------------------------------------
+            
+            ''')
 
 
 def ui_edit_existing_booking(bookings):
@@ -123,9 +139,29 @@ def ui_run_crud_menu_loop(bookings):
     return bookings
 
 
-def ui_run_other_operations_menu():
+def ui_handle_sort_bookings_decreasingly_by_price(bookings):
+    bookings = bookings_general_sort_decreasingly_by_price(bookings)
+    ui_handle_display_all_existing_bookings(bookings)
+
+
+def ui_find_maximum_price_for_all_class_types(bookings):
     pass
 
+
+def ui_run_other_operations_menu(bookings):
+    while True:
+        ui_show_other_operations_menu()
+        option = int(input("What would you like to do? "))
+        if option == 1:
+            bookings = ui_handle_sort_bookings_decreasingly_by_price(bookings)
+        elif option == 2:
+            bookings = ui_find_maximum_price_for_all_class_types(bookings)
+        elif option == 0:
+            break
+        else:
+            print("Invalid operation number. Please try again.")
+
+    return bookings
 
 def ui_run_undo_redo_menu():
     pass
