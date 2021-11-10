@@ -13,7 +13,7 @@ def main():
     crud_insert_booking(bookings_manager, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
     crud_insert_booking(bookings_manager, 3, "Bill Tractor", "Business", 500.0, True)
     crud_insert_booking(bookings_manager, 4, "Cosmin Piersica", "Business", 1000.0, True)
-    crud_insert_booking(bookings_manager, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+    crud_insert_booking(bookings_manager, 5, "Ion Pisoi", "Economy", 50.0, False)
 
     ui_run_main_menu_loop(bookings_manager)
     # command_line_console_run_ui(bookings)

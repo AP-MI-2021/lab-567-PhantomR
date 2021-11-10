@@ -56,8 +56,27 @@ def test_bookings_general_find_maximum_price_for_class_type():
     assert bookings_general_find_maximum_price_for_class_type(bookings, "Business") == 1000.0
     assert bookings_general_find_maximum_price_for_class_type(bookings, "CLASS WITH NO BOOKINGS") is None
 
+def test_compute_total_price_of_reservations_for_name():
+    # create a list of bookings to work on
+    bookings_manager = bookings_manager_create()
+    crud_insert_booking(bookings_manager, 1, "Ion Pisoi", "Economy", 100.0, True)
+    crud_insert_booking(bookings_manager, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
+    crud_insert_booking(bookings_manager, 3, "Bill Tractor", "Business", 500.0, True)
+    crud_insert_booking(bookings_manager, 4, "Alexandru Duna", "Business", 1000.0, True)
+    crud_insert_booking(bookings_manager, 5, "Ion Pisoi", "Economy", 50.0, False)
+
+    total_price = bookings_general_compute_total_price_of_reservations_for_name(bookings_manager, "Ion Pisoi")
+    assert total_price == (100.0 + 200.0 + 50.0)
+
+    total_price = bookings_general_compute_total_price_of_reservations_for_name(bookings_manager, "NAME NOT PRESENT")
+    assert total_price == -1.0
+
+    total_price = bookings_general_compute_total_price_of_reservations_for_name(bookings_manager, "Bill Tractor")
+    assert total_price == 500.0
+
 
 def run_booking_general_tests():
     test_bookings_general_sort_decreasingly_by_price()
     test_bookings_general_find_maximum_price_for_class_type()
+    test_compute_total_price_of_reservations_for_name()
     print("[TESTS] All bookings general tests passed.")

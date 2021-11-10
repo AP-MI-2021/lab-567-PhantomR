@@ -1,6 +1,7 @@
 from typing import Optional
 
 from Domain.booking import *
+from Logic.booking_crud import crud_get_bookings_for_name
 from Logic.bookings_manager import bookings_manager_record_modification, bookings_manager_get_current_list, \
     bookings_manager_set_current_list
 
@@ -54,3 +55,34 @@ def bookings_general_find_maximum_price_for_class_type(bookings: list[dict], cla
 
     # "HACK".. no time :(
     return sorted(prices)[-1]
+
+
+def bookings_general_compute_total_price_of_reservations_for_name(bookings_manager: dict, name: str) -> float:
+    """
+    Given a Bookings Manager and a name, compute the total price of all bookings under the given name.
+
+    Parameters
+    ----------
+    bookings_manager : dict
+        The Bookings Manager.
+    name : str
+        The name in the bookings we are computing the total price for.
+
+    Returns
+    -------
+    float :
+        The total price of the bookings under the given name or -1, if the name does not exist.
+
+    """
+    bookings_for_name = crud_get_bookings_for_name(bookings_manager, name)
+
+    price_total = -1
+    for booking in bookings_for_name:
+        booking_price = booking_get_price(booking)
+
+        if price_total == -1:
+            price_total = 0
+        price_total += booking_price
+
+    return price_total
+

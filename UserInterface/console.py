@@ -38,6 +38,7 @@ def ui_show_other_operations_menu():
     -------------------------------------------
     1. Sort bookings in decreasing order by price
     2. Find the maximum price for all class types
+    3. Compute the total price of bookings under a given name
     -------------------------------------------
     0. Go back to the Main Menu    
     ''')
@@ -189,6 +190,15 @@ def ui_find_maximum_price_for_all_class_types(bookings_manager):
     print(f"The maximum price for the Business class is {max_business}")
 
 
+def ui_handle_compute_total_price_of_bookings_for_name(bookings_manager):
+    name = input("Input a name: ")
+    total_price_of_bookings_under_give_name = bookings_general_compute_total_price_of_reservations_for_name(bookings_manager, name)
+    if total_price_of_bookings_under_give_name == -1:
+        print("Name not found in any booking.")
+    else:
+        print("The total price of the bookings under the given nanme is " + str(total_price_of_bookings_under_give_name))
+
+
 def ui_run_other_operations_menu(bookings_manager):
     while True:
         ui_show_other_operations_menu()
@@ -197,6 +207,8 @@ def ui_run_other_operations_menu(bookings_manager):
             ui_handle_sort_bookings_decreasingly_by_price(bookings_manager)
         elif option == 2:
             ui_find_maximum_price_for_all_class_types(bookings_manager)
+        elif option == 3:
+            ui_handle_compute_total_price_of_bookings_for_name(bookings_manager)
         elif option == 0:
             break
         else:
