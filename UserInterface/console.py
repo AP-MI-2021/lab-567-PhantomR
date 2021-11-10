@@ -40,6 +40,7 @@ def ui_show_other_operations_menu():
     2. Find the maximum price for all class types
     3. Compute the total price of bookings under a given name
     4. Discount checked in bookings by a given percentage
+    5. Upgrade class type of bookings under a given name to a superior one
     -------------------------------------------
     0. Go back to the Main Menu    
     ''')
@@ -206,10 +207,16 @@ def ui_handle_discount_checked_in_bookings_by_given_percentage(bookings_manager)
         if (discount_percentage < 1) or (discount_percentage > 100):
             print("Discount must be an integer between 1 and 100.")
         else:
-            bookings_general_discount_checked_in_reservations(bookings_manager, discount_percentage)
+            bookings_general_discount_checked_in_bookings(bookings_manager, discount_percentage)
             print("Discounts applied successfully.")
     except ValueError:
         print("Discount percentage must be an integer.")
+
+
+def ui_handle_upgrade_class_type_of_bookings_for_name(bookings_manager):
+    name = input("Input a name: ")
+    bookings_general_upgrade_class_type_of_bookings_for_name(bookings_manager, name)
+    print("Class type upgrade completed successfully")
 
 
 def ui_run_other_operations_menu(bookings_manager):
@@ -224,6 +231,8 @@ def ui_run_other_operations_menu(bookings_manager):
             ui_handle_compute_total_price_of_bookings_for_name(bookings_manager)
         elif option == 4:
             ui_handle_discount_checked_in_bookings_by_given_percentage(bookings_manager)
+        elif option == 5:
+            ui_handle_upgrade_class_type_of_bookings_for_name(bookings_manager)
         elif option == 0:
             break
         else:

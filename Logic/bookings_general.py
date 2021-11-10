@@ -106,3 +106,27 @@ def bookings_general_discount_checked_in_bookings(bookings_manager: dict, discou
         discount = old_price * discount_percentage / 100
         new_price = old_price - discount
         booking_set_price(booking, new_price)
+
+
+def bookings_general_upgrade_class_type_of_bookings_for_name(bookings_manager: dict, name: str):
+    """
+    Parameters
+    ----------
+    bookings_manager : dict
+        The Bookings Manager.
+    name : str
+        The name of the person for whose bookings we want to upgrade the class type to a superior one.
+    """
+
+    bookings_for_name = crud_get_bookings_for_name(bookings_manager, name)
+    for booking in bookings_for_name:
+        current_class_type = booking_get_class_type(booking)
+
+        new_class_type = current_class_type
+        if current_class_type == "Economy":
+            new_class_type = "Economy Plus"
+        elif current_class_type == "Economy Plus":
+            new_class_type = "Business"
+
+        booking_set_class_type(booking, new_class_type)
+

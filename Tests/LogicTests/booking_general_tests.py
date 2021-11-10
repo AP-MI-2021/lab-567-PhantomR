@@ -94,9 +94,28 @@ def test_discount_checked_in_bookings():
     assert booking_get_price(crud_get_booking(bookings, 5)) == 50.0
 
 
+def test_bookings_general_upgrade_class_type_of_bookings_for_name():
+    # create a list of bookings to work on
+    bookings_manager = bookings_manager_create()
+    crud_insert_booking(bookings_manager, 1, "Ion Pisoi", "Economy", 100.0, True)
+    crud_insert_booking(bookings_manager, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
+    crud_insert_booking(bookings_manager, 3, "Bill Tractor", "Economy", 500.0, True)
+    crud_insert_booking(bookings_manager, 4, "Alexandru Duna", "Economy Plus", 1000.0, True)
+    crud_insert_booking(bookings_manager, 5, "Ion Pisoi", "Business", 50.0, False)
+
+    bookings_general_upgrade_class_type_of_bookings_for_name(bookings_manager, "Ion Pisoi")
+    bookings = bookings_manager_get_current_list(bookings_manager)
+    assert booking_get_class_type(crud_get_booking(bookings, 1)) == "Economy Plus"
+    assert booking_get_class_type(crud_get_booking(bookings, 2)) == "Business"
+    assert booking_get_class_type(crud_get_booking(bookings, 5)) == "Business"
+    assert booking_get_class_type(crud_get_booking(bookings, 3)) == "Economy"
+    assert booking_get_class_type(crud_get_booking(bookings, 4)) == "Economy Plus"
+
+
 def run_booking_general_tests():
     test_bookings_general_sort_decreasingly_by_price()
     test_bookings_general_find_maximum_price_for_class_type()
     test_compute_total_price_of_bookings_for_name()
     test_discount_checked_in_bookings()
+    test_bookings_general_upgrade_class_type_of_bookings_for_name()
     print("[TESTS] All bookings general tests passed.")
