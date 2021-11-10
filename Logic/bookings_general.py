@@ -1,7 +1,7 @@
 from typing import Optional
 
 from Domain.booking import *
-from Logic.booking_crud import crud_get_bookings_for_name
+from Logic.booking_crud import crud_get_bookings_for_name, crud_get_checked_in_bookings
 from Logic.bookings_manager import bookings_manager_record_modification, bookings_manager_get_current_list, \
     bookings_manager_set_current_list
 
@@ -86,3 +86,22 @@ def bookings_general_compute_total_price_of_reservations_for_name(bookings_manag
 
     return price_total
 
+
+def bookings_general_discount_checked_in_reservations(bookings_manager: dict, discount_percentage: int):
+    """
+    Given a Bookings Manager and a discount percentage, discount all checked in bookings by the given percentage.
+
+    Parameters
+    ----------
+    bookings_manager : dict
+        The Bookings Manager.
+    discount_percentage :
+        The percentage discount (specified as an integer).
+    """
+
+    checked_in_bookings = crud_get_checked_in_bookings(bookings_manager)
+    for booking in checked_in_bookings:
+        old_price = booking_get_price(booking)
+        discount = old_price * discount_percentage / 100
+        new_price = old_price - discount
+        booking_set_price(booking, new_price)
