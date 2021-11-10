@@ -28,26 +28,29 @@ def is_sorted_decreasingly_by_price(bookings: list[dict]) -> bool:
 
 def test_bookings_general_sort_decreasingly_by_price():
     # create a list of bookings to work on
-    bookings = []
-    bookings = crud_insert_booking(bookings, 1, "Alexandru Duna", "Economy", 100.0, True)
-    bookings = crud_insert_booking(bookings, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
-    bookings = crud_insert_booking(bookings, 3, "Bill Tractor", "Business", 500.0, True)
-    bookings = crud_insert_booking(bookings, 4, "Cosmin Piersica", "Business", 1000.0, True)
-    bookings = crud_insert_booking(bookings, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+    bookings_manager = bookings_manager_create()
 
-    bookings = bookings_general_sort_decreasingly_by_price(bookings)
+    crud_insert_booking(bookings_manager, 1, "Alexandru Duna", "Economy", 100.0, True)
+    crud_insert_booking(bookings_manager, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
+    crud_insert_booking(bookings_manager, 3, "Bill Tractor", "Business", 500.0, True)
+    crud_insert_booking(bookings_manager, 4, "Cosmin Piersica", "Business", 1000.0, True)
+    crud_insert_booking(bookings_manager, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+
+    bookings_general_sort_decreasingly_by_price(bookings_manager)
+    bookings = bookings_manager_get_current_list(bookings_manager)
     assert is_sorted_decreasingly_by_price(bookings)
 
 
 def test_bookings_general_find_maximum_price_for_class_type():
     # create a list of bookings to work on
-    bookings = []
-    bookings = crud_insert_booking(bookings, 1, "Alexandru Duna", "Economy", 100.0, True)
-    bookings = crud_insert_booking(bookings, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
-    bookings = crud_insert_booking(bookings, 3, "Bill Tractor", "Business", 500.0, True)
-    bookings = crud_insert_booking(bookings, 4, "Cosmin Piersica", "Business", 1000.0, True)
-    bookings = crud_insert_booking(bookings, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+    bookings_manager = bookings_manager_create()
+    crud_insert_booking(bookings_manager, 1, "Alexandru Duna", "Economy", 100.0, True)
+    crud_insert_booking(bookings_manager, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
+    crud_insert_booking(bookings_manager, 3, "Bill Tractor", "Business", 500.0, True)
+    crud_insert_booking(bookings_manager, 4, "Cosmin Piersica", "Business", 1000.0, True)
+    crud_insert_booking(bookings_manager, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
 
+    bookings = bookings_manager_get_current_list(bookings_manager)
     assert bookings_general_find_maximum_price_for_class_type(bookings, "Economy") == 100.0
     assert bookings_general_find_maximum_price_for_class_type(bookings, "Economy Plus") == 200.0
     assert bookings_general_find_maximum_price_for_class_type(bookings, "Business") == 1000.0

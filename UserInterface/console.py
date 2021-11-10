@@ -43,25 +43,34 @@ def ui_show_other_operations_menu():
     ''')
 
 
-def ui_run_main_menu_loop(bookings):
+def ui_show_undo_redo_menu():
+    print('''
+    UNDO / REDO MENU
+    -------------------------------------------
+    1. Undo
+    2. Redo
+    -------------------------------------------
+    0. Go back to the Main Menu    
+    ''')
+
+
+def ui_run_main_menu_loop(bookings_manager):
     while True:
         ui_show_main_menu()
         option = int(input("What would you like to do? "))
         if option == 1:
-            bookings = ui_run_crud_menu_loop(bookings)
+            ui_run_crud_menu_loop(bookings_manager)
         elif option == 2:
-            bookings = ui_run_other_operations_menu(bookings)
+            ui_run_other_operations_menu(bookings_manager)
         elif option == 3:
-            ui_run_undo_redo_menu()
+            ui_run_undo_redo_menu(bookings_manager)
         elif option == 0:
             break
         else:
             print("Invalid operation number. Please try again.")
 
-    return bookings
 
-
-def ui_handle_create_new_booking(bookings):
+def ui_handle_create_new_booking(bookings_manager):
     id_ = input("Enter the new booking's ID: ")
     name = input("Enter the new booking's name: ")
     # TODO: Make a menu for this
@@ -74,11 +83,12 @@ def ui_handle_create_new_booking(bookings):
     except ValueError as e:
         print_list(e)
 
-    return crud_insert_booking(bookings, id_, name, class_type, price, checked_in)
+    crud_insert_booking(bookings_manager, id_, name, class_type, price, checked_in)
 
 
-def ui_handle_display_all_existing_bookings(bookings):
+def ui_handle_display_all_existing_bookings(bookings_manager):
     # TODO: Add some variables, dirty calls inside the format string
+    bookings = bookings_manager_get_current_list(bookings_manager)
     if len(bookings) == 0:
         print("There are no bookings to show.")
     else:
@@ -97,8 +107,7 @@ def ui_handle_display_all_existing_bookings(bookings):
             ''')
 
 
-def ui_edit_existing_booking(bookings):
-    new_bookings = bookings
+def ui_edit_existing_booking(bookings_manager):
 
     id_ = int(input("Enter the booking's ID: "))
     try:
@@ -106,7 +115,7 @@ def ui_edit_existing_booking(bookings):
     except ValueError as e:
         print_list(e)
 
-    if crud_get_booking(bookings, int(id_)) is None:
+    if crud_get_booking(bookings_manager_get_current_list(bookings_manager), int(id_)) is None:
         print("A booking with the given id does not exist.")
     else:
         new_name = input("Enter the new booking's name: ")
@@ -120,25 +129,22 @@ def ui_edit_existing_booking(bookings):
             id_, new_name, new_class_type, new_price, new_checked_in = \
                 booking_validate(str(id_), new_name, new_class_type, new_price, new_checked_in)
 
-            new_bookings = crud_edit_booking(bookings, id_, new_name, new_class_type, new_price, new_checked_in)
+            crud_edit_booking(bookings_manager, id_, new_name, new_class_type, new_price, new_checked_in)
             print("Booking successfully edited.")
         except ValueError as e:
             print_list(e)
 
-    return new_bookings
 
-
-def ui_delete_existing_booking(bookings):
-    new_bookings = bookings
+def ui_delete_existing_booking(bookings_manager):
     id_ = input("Enter the booking's ID: ")
     try:
         id_ = booking_validate_id(id_)
-        booking = crud_get_booking(bookings, id_)
+        booking = crud_get_booking(bookings_manager_get_current_list(bookings_manager), id_)
         try:
             if booking is None:
                 print("A booking with the given id does not exist.")
             else:
-                new_bookings = crud_delete_booking(bookings, id_)
+                crud_delete_booking(bookings_manager, id_)
                 print("Booking successfully deleted.")
 
         except ValueError as e:
@@ -147,37 +153,33 @@ def ui_delete_existing_booking(bookings):
     except ValueError as e:
         print_list(e)
 
-    return new_bookings
 
-
-def ui_run_crud_menu_loop(bookings):
+def ui_run_crud_menu_loop(bookings_manager):
     while True:
         ui_show_crud_menu()
         option = int(input("What would you like to do? "))
         if option == 1:
-            bookings = ui_handle_create_new_booking(bookings)
+            ui_handle_create_new_booking(bookings_manager)
         elif option == 2:
-            ui_handle_display_all_existing_bookings(bookings)
+            ui_handle_display_all_existing_bookings(bookings_manager)
         elif option == 3:
-            bookings = ui_edit_existing_booking(bookings)
+            ui_edit_existing_booking(bookings_manager)
         elif option == 4:
-            bookings = ui_delete_existing_booking(bookings)
+            ui_delete_existing_booking(bookings_manager)
         elif option == 0:
             break
         else:
             print("Invalid operation number. Please try again.")
 
-    return bookings
 
-
-def ui_handle_sort_bookings_decreasingly_by_price(bookings):
-    bookings = bookings_general_sort_decreasingly_by_price(bookings)
+def ui_handle_sort_bookings_decreasingly_by_price(bookings_manager):
+    bookings_general_sort_decreasingly_by_price(bookings_manager)
     print("Done sorting.")
-    ui_handle_display_all_existing_bookings(bookings)
-    return bookings
+    ui_handle_display_all_existing_bookings(bookings_manager)
 
 
-def ui_find_maximum_price_for_all_class_types(bookings):
+def ui_find_maximum_price_for_all_class_types(bookings_manager):
+    bookings = bookings_manager_get_current_list(bookings_manager)
     max_economy = bookings_general_find_maximum_price_for_class_type(bookings, "Economy")
     max_economy_plus = bookings_general_find_maximum_price_for_class_type(bookings, "Economy Plus")
     max_business = bookings_general_find_maximum_price_for_class_type(bookings, "Business")
@@ -187,21 +189,45 @@ def ui_find_maximum_price_for_all_class_types(bookings):
     print(f"The maximum price for the Business class is {max_business}")
 
 
-def ui_run_other_operations_menu(bookings):
+def ui_run_other_operations_menu(bookings_manager):
     while True:
         ui_show_other_operations_menu()
         option = int(input("What would you like to do? "))
         if option == 1:
-            bookings = ui_handle_sort_bookings_decreasingly_by_price(bookings)
+            ui_handle_sort_bookings_decreasingly_by_price(bookings_manager)
         elif option == 2:
-            ui_find_maximum_price_for_all_class_types(bookings)
+            ui_find_maximum_price_for_all_class_types(bookings_manager)
         elif option == 0:
             break
         else:
             print("Invalid operation number. Please try again.")
 
-    return bookings
+
+def ui_handle_undo(bookings_manager):
+    was_successful = bookings_manager_apply_undo(bookings_manager)
+    if was_successful:
+        print("Undo operation successful.")
+    else:
+        print("Nothing to undo.")
 
 
-def ui_run_undo_redo_menu():
-    pass
+def ui_handle_redo(bookings_manager):
+    was_successful = bookings_manager_apply_redo(bookings_manager)
+    if was_successful:
+        print("Redo operation successful.")
+    else:
+        print("Nothing to redo.")
+
+
+def ui_run_undo_redo_menu(bookings_manager):
+    while True:
+        ui_show_undo_redo_menu()
+        option = int(input("What would you like to do? "))
+        if option == 1:
+            ui_handle_undo(bookings_manager)
+        elif option == 2:
+            ui_handle_redo(bookings_manager)
+        elif option == 0:
+            break
+        else:
+            print("Invalid operation number. Please try again.")

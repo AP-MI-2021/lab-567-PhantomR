@@ -1,15 +1,15 @@
 from Domain.booking import *
+from Logic.bookings_manager import *
 
 
-def crud_insert_booking(bookings: list[dict], id_: int, name: str, class_type: str, price: float, checked_in: bool):
+def crud_insert_booking(bookings_manager: dict, id_: int, name: str, class_type: str, price: float, checked_in: bool):
     """
-    Inserts a new Booking with the given attributes in a given list of bookings.
+    Inserts a new Booking with the given attributes in a given a Bookings Manager.
 
     Parameters
     ----------
-    bookings : list[dict]
-        The given list of bookings.
-
+    bookings_manager : dict
+        The Bookings Manager (contains the list of bookings to modify).
     id_ : int
         The value of the id attribute of the booking to insert.
     name : str
@@ -20,52 +20,45 @@ def crud_insert_booking(bookings: list[dict], id_: int, name: str, class_type: s
         The value of the price attribute of the booking to insert
     checked_in : bool
         The value of the checked in attribute of the booking to insert.
-
-    Returns
-    -------
-    list[dict]:
-        A new list containing copies of the previously existing bookings along with the newly created one.
     """
+    bookings_manager_record_modification(bookings_manager)
+
+    bookings = bookings_manager_get_current_list(bookings_manager)
     new_booking = booking_create(id_, name, class_type, price, checked_in)
-    new_bookings = bookings + [new_booking]
-
-    return new_bookings
+    bookings.append(new_booking)
 
 
-def crud_delete_booking(bookings: list[dict], id_: int):
+def crud_delete_booking(bookings_manager: dict, id_: int):
     """
     Deleted the booking having the given id from the given list of bookings, if it exists.
 
     Parameters
     ----------
-    bookings : list[dict]
-        The list of bookings.
+    bookings_manager : dict
+        The Bookings Manager (contains the list of bookings to modify).
     id_ : int
         The id of the booking to delete.
-
-    Returns
-    -------
-    list[dict]:
-        A new list containing copies of the bookings in the given list, except for the one to delete, if it existed.
     """
+    bookings_manager_record_modification(bookings_manager)
+
+    bookings = bookings_manager_get_current_list(bookings_manager)
     new_bookings = []
     for booking in bookings:
         if booking_get_id(booking) != id_:
-            # we skip the booking we want to delete
             new_bookings.append(booking)
 
-    return new_bookings
+    bookings_manager_set_current_list(bookings_manager, new_bookings)
 
 
 def crud_edit_booking(
-        bookings: list[dict], id_: int, new_name: str, new_class_type: str, new_price: float, new_checked_in: bool):
+        bookings_manager: dict, id_: int, new_name: str, new_class_type: str, new_price: float, new_checked_in: bool):
     """
     Edits the booking having the given id from the given list of bookings.
 
     Parameters
     ----------
-    bookings : list[dict]
-        The list of bookings.
+    bookings_manager : dict
+        The Bookings Manager (contains the list of bookings to modify).
     id_ : int
         The id of the booking to edit.
     new_name : str
@@ -76,24 +69,14 @@ def crud_edit_booking(
         The new price of the booking to edit.
     new_checked_in : bool
         The new value for the checked attribute of the booking to edit.
-
-    Returns
-    -------
-    list[dict]:
-        A new list of bookings containing copies of the bookings in the given list, where the copy of the one to edit
-        has been modified accordingly.
     """
-    new_bookings = []
-    for booking in bookings:
-        if booking_get_id(booking) == id_:
-            # we add a booking with the updated attributes in place of the original one
-            new_booking = booking_create(id_, new_name, new_class_type, new_price, new_checked_in)
-            new_bookings.append(new_booking)
-        else:
-            # if the ID's to do not match, keep the old booking
-            new_bookings.append(booking)
+    bookings_manager_record_modification(bookings_manager)
+    bookings = bookings_manager_get_current_list(bookings_manager)
 
-    return new_bookings
+    for i in range(len(bookings)):
+        if booking_get_id(bookings[i]) == id_:
+            bookings[i] = booking_create(id_, new_name, new_class_type, new_price, new_checked_in)
+            break
 
 
 def crud_get_booking(bookings, id_):
@@ -116,5 +99,4 @@ def crud_get_booking(bookings, id_):
     for booking in bookings:
         if booking_get_id(booking) == id_:
             return booking
-
     return None

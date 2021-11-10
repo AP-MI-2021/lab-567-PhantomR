@@ -1,24 +1,28 @@
 from typing import Optional
 
 from Domain.booking import *
+from Logic.bookings_manager import bookings_manager_record_modification, bookings_manager_get_current_list, \
+    bookings_manager_set_current_list
 
 
-def bookings_general_sort_decreasingly_by_price(bookings: list[dict]) -> list[dict]:
+def bookings_general_sort_decreasingly_by_price(bookings_manager: dict):
     """
     Sorts the given list of bookings in decreasing order, by price.
 
     Parameters
     ----------
-    bookings : list[dict]
-        The list of bookings to sort.
+    bookings_manager : dict
+        The Bookings Manager we operate on.
 
     Returns
     -------
     list[dict]:
         A new list containing the bookings from the given list, but sorted decreasingly, by price.
     """
-    sorted_list = sorted(bookings, key=booking_get_price, reverse=True)
-    return sorted_list
+    bookings_manager_record_modification(bookings_manager)
+    bookings = bookings_manager_get_current_list(bookings_manager)
+    sorted_bookings = sorted(bookings, key=booking_get_price, reverse=True)
+    bookings_manager_set_current_list(bookings_manager, sorted_bookings)
 
 
 def bookings_general_find_maximum_price_for_class_type(bookings: list[dict], class_type: str) -> Optional[float]:
