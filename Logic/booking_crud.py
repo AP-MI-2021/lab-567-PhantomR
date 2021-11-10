@@ -79,6 +79,32 @@ def crud_edit_booking(
             break
 
 
+def crud_get_bookings_for_name(bookings_manager: dict, name: str) -> list:
+    """
+    Retrieves the bookings having the given name.
+
+    Parameters
+    ----------
+    bookings_manager : dict
+        The Bookings Manager.
+    name : str
+        The name the bookings we want to retrieve should have.
+
+    Returns
+    -------
+    list :
+        A list of the bookings we want to retrieve.
+    """
+    bookings = bookings_manager_get_current_list(bookings_manager)
+
+    result = []
+    for booking in bookings:
+        if booking_get_name(booking) == name:
+            result.append(booking)
+
+    return result
+
+
 def crud_get_booking(bookings, id_):
     """
     Retrieves a booking having the given id from the given list of bookings.
