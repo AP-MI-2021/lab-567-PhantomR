@@ -60,17 +60,20 @@ def ui_show_undo_redo_menu():
 def ui_run_main_menu_loop(bookings_manager):
     while True:
         ui_show_main_menu()
-        option = int(input("What would you like to do? "))
-        if option == 1:
-            ui_run_crud_menu_loop(bookings_manager)
-        elif option == 2:
-            ui_run_other_operations_menu(bookings_manager)
-        elif option == 3:
-            ui_run_undo_redo_menu(bookings_manager)
-        elif option == 0:
-            break
-        else:
-            print("Invalid operation number. Please try again.")
+        try:
+            option = int(input("What would you like to do? "))
+            if option == 1:
+                ui_run_crud_menu_loop(bookings_manager)
+            elif option == 2:
+                ui_run_other_operations_menu(bookings_manager)
+            elif option == 3:
+                ui_run_undo_redo_menu(bookings_manager)
+            elif option == 0:
+                break
+            else:
+                print("Invalid operation number. Please try again.")
+        except ValueError:
+            print("Option must be an integer. Please try again.")
 
 
 def ui_handle_create_new_booking(bookings_manager):
@@ -160,19 +163,22 @@ def ui_delete_existing_booking(bookings_manager):
 def ui_run_crud_menu_loop(bookings_manager):
     while True:
         ui_show_crud_menu()
-        option = int(input("What would you like to do? "))
-        if option == 1:
-            ui_handle_create_new_booking(bookings_manager)
-        elif option == 2:
-            ui_handle_display_all_existing_bookings(bookings_manager)
-        elif option == 3:
-            ui_edit_existing_booking(bookings_manager)
-        elif option == 4:
-            ui_delete_existing_booking(bookings_manager)
-        elif option == 0:
-            break
-        else:
-            print("Invalid operation number. Please try again.")
+        try:
+            option = int(input("What would you like to do? "))
+            if option == 1:
+                ui_handle_create_new_booking(bookings_manager)
+            elif option == 2:
+                ui_handle_display_all_existing_bookings(bookings_manager)
+            elif option == 3:
+                ui_edit_existing_booking(bookings_manager)
+            elif option == 4:
+                ui_delete_existing_booking(bookings_manager)
+            elif option == 0:
+                break
+            else:
+                print("Invalid operation number. Please try again.")
+        except ValueError:
+            print("Option must be an integer. Please try again.")
 
 
 def ui_handle_sort_bookings_decreasingly_by_price(bookings_manager):
@@ -194,7 +200,7 @@ def ui_find_maximum_price_for_all_class_types(bookings_manager):
 
 def ui_handle_compute_total_price_of_bookings_for_name(bookings_manager):
     name = input("Input a name: ")
-    total_price_of_bookings_under_give_name = bookings_general_compute_total_price_of_reservations_for_name(bookings_manager, name)
+    total_price_of_bookings_under_give_name = bookings_general_compute_total_price_of_bookings_for_name(bookings_manager, name)
     if total_price_of_bookings_under_give_name == -1:
         print("Name not found in any booking.")
     else:
@@ -222,21 +228,24 @@ def ui_handle_upgrade_class_type_of_bookings_for_name(bookings_manager):
 def ui_run_other_operations_menu(bookings_manager):
     while True:
         ui_show_other_operations_menu()
-        option = int(input("What would you like to do? "))
-        if option == 1:
-            ui_handle_sort_bookings_decreasingly_by_price(bookings_manager)
-        elif option == 2:
-            ui_find_maximum_price_for_all_class_types(bookings_manager)
-        elif option == 3:
-            ui_handle_compute_total_price_of_bookings_for_name(bookings_manager)
-        elif option == 4:
-            ui_handle_discount_checked_in_bookings_by_given_percentage(bookings_manager)
-        elif option == 5:
-            ui_handle_upgrade_class_type_of_bookings_for_name(bookings_manager)
-        elif option == 0:
-            break
-        else:
-            print("Invalid operation number. Please try again.")
+        try:
+            option = int(input("What would you like to do? "))
+            if option == 1:
+                ui_handle_sort_bookings_decreasingly_by_price(bookings_manager)
+            elif option == 2:
+                ui_find_maximum_price_for_all_class_types(bookings_manager)
+            elif option == 3:
+                ui_handle_compute_total_price_of_bookings_for_name(bookings_manager)
+            elif option == 4:
+                ui_handle_discount_checked_in_bookings_by_given_percentage(bookings_manager)
+            elif option == 5:
+                ui_handle_upgrade_class_type_of_bookings_for_name(bookings_manager)
+            elif option == 0:
+                break
+            else:
+                print("Invalid operation number. Please try again.")
+        except ValueError:
+            print("Option must be an integer. Please try again.")
 
 
 def ui_handle_undo(bookings_manager):
@@ -258,12 +267,16 @@ def ui_handle_redo(bookings_manager):
 def ui_run_undo_redo_menu(bookings_manager):
     while True:
         ui_show_undo_redo_menu()
-        option = int(input("What would you like to do? "))
-        if option == 1:
-            ui_handle_undo(bookings_manager)
-        elif option == 2:
-            ui_handle_redo(bookings_manager)
-        elif option == 0:
-            break
-        else:
-            print("Invalid operation number. Please try again.")
+        try:
+            option = int(input("What would you like to do? "))
+            if option == 1:
+                ui_handle_undo(bookings_manager)
+            elif option == 2:
+                ui_handle_redo(bookings_manager)
+            elif option == 0:
+                break
+            else:
+                print("Invalid operation number. Please try again.")
+        except ValueError:
+            print("Option must be an integer. Please try again.")
+
