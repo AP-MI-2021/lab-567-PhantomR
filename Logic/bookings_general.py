@@ -57,7 +57,7 @@ def bookings_general_find_maximum_price_for_class_type(bookings: list[dict], cla
     return sorted(prices)[-1]
 
 
-def bookings_general_compute_total_price_of_reservations_for_name(bookings_manager: dict, name: str) -> float:
+def bookings_general_compute_total_price_of_bookings_for_name(bookings_manager: dict, name: str) -> float:
     """
     Given a Bookings Manager and a name, compute the total price of all bookings under the given name.
 
@@ -87,7 +87,7 @@ def bookings_general_compute_total_price_of_reservations_for_name(bookings_manag
     return price_total
 
 
-def bookings_general_discount_checked_in_reservations(bookings_manager: dict, discount_percentage: int):
+def bookings_general_discount_checked_in_bookings(bookings_manager: dict, discount_percentage: int):
     """
     Given a Bookings Manager and a discount percentage, discount all checked in bookings by the given percentage.
 
