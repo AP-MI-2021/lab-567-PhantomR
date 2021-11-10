@@ -98,6 +98,7 @@ def bookings_general_discount_checked_in_reservations(bookings_manager: dict, di
     discount_percentage :
         The percentage discount (specified as an integer).
     """
+    bookings_manager_record_modification(bookings_manager)
 
     checked_in_bookings = crud_get_checked_in_bookings(bookings_manager)
     for booking in checked_in_bookings:

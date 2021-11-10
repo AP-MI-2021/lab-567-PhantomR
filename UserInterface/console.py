@@ -211,6 +211,7 @@ def ui_handle_discount_checked_in_bookings_by_given_percentage(bookings_manager)
     except ValueError:
         print("Discount percentage must be an integer.")
 
+
 def ui_run_other_operations_menu(bookings_manager):
     while True:
         ui_show_other_operations_menu()
