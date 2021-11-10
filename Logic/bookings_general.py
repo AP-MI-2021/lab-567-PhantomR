@@ -117,6 +117,7 @@ def bookings_general_upgrade_class_type_of_bookings_for_name(bookings_manager: d
     name : str
         The name of the person for whose bookings we want to upgrade the class type to a superior one.
     """
+    bookings_manager_record_modification(bookings_manager)
 
     bookings_for_name = crud_get_bookings_for_name(bookings_manager, name)
     for booking in bookings_for_name:
