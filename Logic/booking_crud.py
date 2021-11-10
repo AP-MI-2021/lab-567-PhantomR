@@ -105,6 +105,30 @@ def crud_get_bookings_for_name(bookings_manager: dict, name: str) -> list:
     return result
 
 
+def crud_get_checked_in_bookings(bookings_manager: dict) -> list:
+    """
+    Retrieves the bookings having a true checked_in attribute.
+
+    Parameters
+    ----------
+    bookings_manager : dict
+        The Bookings Manager.
+
+    Returns
+    -------
+    list :
+        A list of the bookings we want to retrieve.
+    """
+    bookings = bookings_manager_get_current_list(bookings_manager)
+
+    result = []
+    for booking in bookings:
+        if booking_get_checked_in(booking):
+            result.append(booking)
+
+    return result
+
+
 def crud_get_booking(bookings, id_):
     """
     Retrieves a booking having the given id from the given list of bookings.

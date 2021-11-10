@@ -64,7 +64,30 @@ def test_get_bookings_for_name():
     assert len(bookings_for_ion_pisoi) == 1
 
 
+def test_get_checked_in_bookings():
+    bookings_manager = bookings_manager_create()
+    crud_insert_booking(bookings_manager, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+    crud_insert_booking(bookings_manager, 1, "Alexandru Duna", "Economy", 100.0, True)
+    crud_insert_booking(bookings_manager, 2, "Ion Pisoi", "Economy Plus", 200.0, False)
+    crud_insert_booking(bookings_manager, 3, "Bill Tractor", "Business", 500.0, True)
+    crud_insert_booking(bookings_manager, 4, "Alexandru Duna", "Business", 1000.0, True)
+    crud_insert_booking(bookings_manager, 5, "Sergiu Vasile Covor", "Economy", 50.0, False)
+
+    checked_in_bookings = crud_get_checked_in_bookings(bookings_manager)
+    assert len(checked_in_bookings) == 3
+
+    crud_delete_booking(bookings_manager, 1)
+    checked_in_bookings = crud_get_checked_in_bookings(bookings_manager)
+    assert len(checked_in_bookings) == 2
+
+    crud_delete_booking(bookings_manager, 3)
+    crud_delete_booking(bookings_manager, 4)
+    checked_in_bookings = crud_get_checked_in_bookings(bookings_manager)
+    assert len(checked_in_bookings) == 0
+
+
 def run_booking_crud_tests():
     test_booking_crud()
     test_get_bookings_for_name()
+    test_get_checked_in_bookings()
     print("[TESTS] All Booking CRUD tests passed.")
